@@ -1,3 +1,4 @@
+#File extensions
 $extension_paths = @{
     # No name
     'noname'=  'other/uncategorized';
@@ -150,6 +151,7 @@ $DesktopPath = [System.Environment]::GetFolderPath("Desktop")
 $cleandesktopFolderPath = "$DesktopPath\clean-desktop"
 $desktopFiles = Get-ChildItem $env:USERPROFILE\Desktop\ | Where-Object {$_.Name -match "\.[a-zA-Z0-9]+"}
 
+#Function checks if the directory exists, if not it will create one
 function createDirectory($path) {
     if ((Test-Path -Path $path )-eq $false) {
         New-Item -ItemType Directory -Path $path
@@ -159,14 +161,7 @@ function createDirectory($path) {
 
 createDirectory($cleandesktopFolderPath)
 
-
-
-
-#Write-Host $extension_paths.Keys
-
-
 foreach ($item in $desktopFiles){
-   # Write-Host $item.Extension
     foreach($key in $extension_paths.Keys){
         if($item.Extension -eq $key){
             $Filedirectory = $extension_paths[$key]
