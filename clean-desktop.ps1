@@ -148,12 +148,10 @@ $extension_paths = @{
 }
 #Variables
 $DesktopPath = [System.Environment]::GetFolderPath("Desktop")
-$cleandesktopFolderPath = "$DesktopPath\clean-desktop"
 $font = "Arial"
-
-
-
-
+$IconPath = "./pictures/broom.ico"
+$Version = "0.1"
+$LastUpdate = "03-31-2020"
 
 #Import Windows Forms Assembly
 Add-Type -assembly System.Windows.Forms
@@ -166,6 +164,69 @@ $main_form.StartPosition = "CenterScreen"
 $main_form.MaximizeBox = $false
 $main_form.FormBorderStyle = "FixedDialog"
 $main_form.AutoSize = $true
+$main_form.Icon = New-Object System.Drawing.Icon($IconPath)
+
+$help_form = New-Object System.Windows.Forms.Form
+$help_form.Text = 'Help'
+$help_form.Size = New-Object System.Drawing.Size(50, 90)
+$help_form.FormBorderStyle = "FixedDialog"
+$help_form.AutoSize = $true
+$help_form.Icon = New-Object System.Drawing.Icon($IconPath)
+$help_form.StartPosition = "CenterScreen"
+$help_form.FormBorderStyle = "FixedDialog"
+$help_form.MaximizeBox = $false
+
+$labelHelp = New-Object System.Windows.Forms.Label
+$labelHelp.AutoSize =$true
+$labelHelp.Text = "Documentation can you find here: "
+$labelHelp.Left = 10
+$labelHelp.Top = 20;
+$help_form.Controls.Add($labelHelp)
+
+$linkLabelGitHub2 = New-Object System.Windows.Forms.LinkLabel 
+$linkLabelGitHub2.LinkColor = "BLUE" 
+$linkLabelGitHub2.ActiveLinkColor = "RED" 
+$linkLabelGitHub2.Text = "GitHub" 
+$linkLabelGitHub2.Top = 20
+$linkLabelGitHub2.Left = 200
+$linkLabelGitHub2.add_Click({[system.Diagnostics.Process]::start("https://github.com/gremi-jr/clean-desktop")}) 
+$help_form.Controls.Add($linkLabelGitHub2)
+
+$linkLabelGitHub = New-Object System.Windows.Forms.LinkLabel 
+$linkLabelGitHub.LinkColor = "BLUE" 
+$linkLabelGitHub.ActiveLinkColor = "RED" 
+$linkLabelGitHub.Text = "GitHub" 
+$linkLabelGitHub.Top = 20
+$linkLabelGitHub.Left = 200
+$linkLabelGitHub.add_Click({[system.Diagnostics.Process]::start("https://github.com/gremi-jr/clean-desktop")}) 
+
+
+$about_form = New-Object System.Windows.Forms.Form
+$about_form.Text = 'About'
+$about_form.Size = New-Object System.Drawing.Size(50, 120)
+$about_form.FormBorderStyle = "FixedDialog"
+$about_form.AutoSize = $true
+$about_form.Icon = New-Object System.Drawing.Icon($IconPath)
+$about_form.Controls.Add($linkLabelGitHub)
+$about_form.StartPosition = "CenterScreen"
+$about_form.MaximizeBox = $false
+$about_form.FormBorderStyle = "FixedDialog"
+
+$linkLabelMail = New-Object System.Windows.Forms.LinkLabel 
+$linkLabelMail.LinkColor = "BLUE" 
+$linkLabelMail.ActiveLinkColor = "RED" 
+$linkLabelMail.Text = "Mail" 
+$linkLabelMail.Top = 42
+$linkLabelMail.Left = 200
+$linkLabelMail.add_Click({[system.Diagnostics.Process]::start("mailto:info@timogremler.de")}) 
+$about_form.Controls.Add($linkLabelMail) 
+
+$labelAbout = New-Object System.Windows.Forms.Label
+$labelAbout.AutoSize =$true
+$labelAbout.Text = "Developer: Timo Gremler`nVersion: $($Version)`nLast Update: $($LastUpdate)"
+$labelAbout.Left = 10
+$labelAbout.Top = 20;
+$about_form.Controls.Add($labelAbout)
 
 #Create Button for start cleaning
 $cleaningButton = New-Object System.Windows.Forms.Button
@@ -177,7 +238,6 @@ $cleaningButton.Font = New-Object System.Drawing.Font($font, 10, [System.Drawing
 
 #Menubar 
 $mainMenu = New-Object System.Windows.Forms.MenuStrip
-
 $mainMenu.Font = New-Object System.Drawing.Font($font, 9, [System.Drawing.FontStyle]::Regular)
 #Menue
 $menuMenue = New-Object System.Windows.Forms.ToolStripMenuItem
@@ -193,14 +253,12 @@ $menuMenueBeenden.Add_Click( { $main_form.Close() })
 $menuHelp = New-Object System.Windows.Forms.ToolStripMenuItem
 $mainMenu.Items.Add($menuHelp)
 $menuHelp.Text = "Help"
-$msgHilfe = "If you have any issues, contact me over github or write an email (timo@timogremler.de)."
-$menuHelp.Add_Click( { [System.Windows.Forms.MessageBox]::Show($msgHilfe, "Hilfe", 0) })
+$menuHelp.Add_Click( { $help_form.ShowDialog() })
 #About
 $menuAbout = New-Object System.Windows.Forms.ToolStripMenuItem
 $mainMenu.Items.Add($menuAbout)
 $menuAbout.Text = "About"
-$msgAbout = "Developer: Timo Gremler`nVersion: $($Version)`nLast Update: $($LastUpdate)"
-$menuAbout.Add_Click( { [System.Windows.Forms.MessageBox]::Show($msgAbout, "About", 0) })
+$menuAbout.Add_Click( { $about_form.Show() })
 
 #Path
 $pathbox = New-Object System.Windows.Forms.TextBox
