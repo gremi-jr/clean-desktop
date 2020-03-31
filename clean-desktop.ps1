@@ -149,25 +149,115 @@ $extension_paths = @{
 #Variables
 $DesktopPath = [System.Environment]::GetFolderPath("Desktop")
 $cleandesktopFolderPath = "$DesktopPath\clean-desktop"
-$desktopFiles = Get-ChildItem $env:USERPROFILE\Desktop\ | Where-Object {$_.Name -match "\.[a-zA-Z0-9]+"}
+$font = "Arial"
 
-#Function checks if the directory exists, if not it will create one
-function createDirectory($path) {
-    if ((Test-Path -Path $path )-eq $false) {
-        New-Item -ItemType Directory -Path $path
-    }
-    
-}
 
-createDirectory($cleandesktopFolderPath)
 
-foreach ($item in $desktopFiles){
-    foreach($key in $extension_paths.Keys){
-        if($item.Extension -eq $key){
-            $Filedirectory = $extension_paths[$key]
-            createDirectory("$cleandesktopFolderPath\$Filedirectory")
-            Move-Item -Path "$DesktopPath\$item" -Destination "$cleandesktopFolderPath\$Filedirectory"
+
+
+#Import Windows Forms Assembly
+Add-Type -assembly System.Windows.Forms
+
+#Create a Form + Design
+$main_form = New-Object System.Windows.Forms.Form
+$main_form.Text = 'Clean-Desktop'
+$main_form.Size = New-Object System.Drawing.Size(400, 140)
+$main_form.StartPosition = "CenterScreen"
+$main_form.MaximizeBox = $false
+$main_form.FormBorderStyle = "FixedDialog"
+$main_form.AutoSize = $true
+
+#Create Button for start cleaning
+$cleaningButton = New-Object System.Windows.Forms.Button
+$cleaningButton.Left = 10;
+$cleaningButton.Text = "Start cleaning"
+$cleaningButton.Top = 70;
+$cleaningButton.Width = 100;
+$cleaningButton.Font = New-Object System.Drawing.Font($font, 10, [System.Drawing.FontStyle]::Regular)
+
+#Menubar 
+$mainMenu = New-Object System.Windows.Forms.MenuStrip
+
+$mainMenu.Font = New-Object System.Drawing.Font($font, 9, [System.Drawing.FontStyle]::Regular)
+#Menue
+$menuMenue = New-Object System.Windows.Forms.ToolStripMenuItem
+$mainMenu.Items.Add($menuMenue)
+$menuMenue.Text = "Menu"
+#Menue_Beenden
+$menuMenueBeenden = New-Object System.Windows.Forms.ToolStripMenuItem
+$menuMenue.DropDownItems.Add($menuMenueBeenden)
+$menuMenueBeenden.Text = "Exit"
+$menuMenueBeenden.Add_Click( { $main_form.Close() })
+
+#Help
+$menuHelp = New-Object System.Windows.Forms.ToolStripMenuItem
+$mainMenu.Items.Add($menuHelp)
+$menuHelp.Text = "Help"
+$msgHilfe = "If you have any issues, contact me over github or write an email (timo@timogremler.de)."
+$menuHelp.Add_Click( { [System.Windows.Forms.MessageBox]::Show($msgHilfe, "Hilfe", 0) })
+#About
+$menuAbout = New-Object System.Windows.Forms.ToolStripMenuItem
+$mainMenu.Items.Add($menuAbout)
+$menuAbout.Text = "About"
+$msgAbout = "Developer: Timo Gremler`nVersion: $($Version)`nLast Update: $($LastUpdate)"
+$menuAbout.Add_Click( { [System.Windows.Forms.MessageBox]::Show($msgAbout, "About", 0) })
+
+#Path
+$pathbox = New-Object System.Windows.Forms.TextBox
+$pathbox.Width = 350;
+$pathbox.Left = 10;
+$pathbox.Top = 40;
+$pathbox.Text = "$DesktopPath\clean-desktop"
+$pathbox.ForeColor = 'Black'
+
+
+function cleanDesktop($path){
+    $desktopFiles = Get-ChildItem $env:USERPROFILE\Desktop\ | Where-Object {$_.Name -match "\.[a-zA-Z0-9]+"}
+    foreach ($item in $desktopFiles){
+        foreach($key in $extension_paths.Keys){
+            if($item.Extension -eq $key){
+                $Filedirectory = $extension_paths[$key]
+                createSubDirectory("$path\$Filedirectory")
+                Move-Item -Path "$DesktopPath\$item" -Destination "$path\$Filedirectory"
+            }
         }
     }
 }
 
+
+#Function checks if the directory exists, if not it will create one
+function createSubDirectory($path) {
+
+    if ((Test-Path -Path $path )-eq $false) {
+        New-Item -ItemType Directory -Path $path
+    }
+}
+
+#Checks the path if it conatins the directory and add it with a backslash if missing
+function createDirectory($path){
+
+    if(($path -like "*\clean-desktop") -eq $false){
+        
+        if($path -notmatch '\\$'){
+            $path +='\'
+        }
+        $pathbox.Text = $path+"clean-desktop"
+
+        if ((Test-Path -Path $pathbox.Text )-eq $false) {
+            New-Item -ItemType Directory -Path $pathbox.Text
+        }
+    } else {
+        if ((Test-Path -Path $path )-eq $false) {
+            New-Item -ItemType Directory -Path $path
+        }
+    }
+}
+
+$cleaningButton.Add_Click({createDirectory($pathbox.Text)})
+$cleaningButton.Add_Click({cleanDesktop($pathbox.Text)})
+
+$main_form.Controls.Add($pathbox)
+$main_form.Controls.Add($cleaningButton)
+$main_form.Controls.Add($mainMenu)
+#Shows the Window
+$main_form.ShowDialog()
