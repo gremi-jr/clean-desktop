@@ -4,6 +4,7 @@ This little helper tool will clean your desktop and sort all file into categoriz
 
 # How does it work?
 Download the latest release and launch the clean-desktop.exe or the clean-desktop.ps1.
+
 ![Program](pictures/clean-desktop.PNG)
 
 The program will always create a "clean-desktop" folder, where all your file goes in. The standard directory is the desktop.
