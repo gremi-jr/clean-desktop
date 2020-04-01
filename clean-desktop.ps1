@@ -149,7 +149,7 @@ $extension_paths = @{
 #Variables
 $DesktopPath = [System.Environment]::GetFolderPath("Desktop")
 $font = "Arial"
-$IconPath = "./pictures/broom.ico"
+$IconPath = ".\pictures\broom.ico"
 $Version = "0.1"
 $LastUpdate = "03-31-2020"
 
@@ -268,6 +268,12 @@ $pathbox.Top = 40;
 $pathbox.Text = "$DesktopPath\clean-desktop"
 $pathbox.ForeColor = 'Black'
 
+$checkBoxFolder = New-Object System.Windows.Forms.CheckBox
+$checkBoxFolder.Text = "Move Folder"
+$checkBoxFolder.Top = 70
+$checkBoxFolder.Left = 250
+$checkBoxFolder.Font =  [System.Drawing.Font]::new($font, 10, [System.Drawing.FontStyle]::Regular)
+$main_form.Controls.Add($checkBoxFolder)
 
 function cleanDesktop($path){
     $desktopFiles = Get-ChildItem $env:USERPROFILE\Desktop\ | Where-Object {$_.Name -match "\.[a-zA-Z0-9]+"}
@@ -311,8 +317,13 @@ function createDirectory($path){
     }
 }
 
-$cleaningButton.Add_Click({createDirectory($pathbox.Text)})
-$cleaningButton.Add_Click({cleanDesktop($pathbox.Text)})
+
+$cleaningButton.Add_Click({
+    
+    createDirectory($pathbox.Text)
+    cleanDesktop($pathbox.Text)
+
+})
 
 $main_form.Controls.Add($pathbox)
 $main_form.Controls.Add($cleaningButton)
