@@ -144,7 +144,8 @@ $extension_paths = @{
     '.lnk'=    'text/other/system';
     '.msi'=    'text/other/system';
     '.sys'=    'text/other/system';
-    '.tmp'=    'text/other/system'
+    '.tmp'=    'text/other/system';
+    'directory' = 'folders'
 }
 #Variables
 $DesktopPath = [System.Environment]::GetFolderPath("Desktop")
@@ -276,7 +277,7 @@ $checkBoxFolder.Font =  [System.Drawing.Font]::new($font, 10, [System.Drawing.Fo
 $main_form.Controls.Add($checkBoxFolder)
 
 function cleanDesktop($path){
-    $desktopFiles = Get-ChildItem $env:USERPROFILE\Desktop\ | Where-Object {$_.Name -match "\.[a-zA-Z0-9]+"}
+    $desktopFiles = Get-ChildItem $env:USERPROFILE\Desktop\ 
     foreach ($item in $desktopFiles){
         foreach($key in $extension_paths.Keys){
             if($item.Extension -eq $key){
@@ -285,7 +286,16 @@ function cleanDesktop($path){
                 Move-Item -Path "$DesktopPath\$item" -Destination "$path\$Filedirectory"
             }
         }
+        if ($checkBoxFolder.Checked -eq $true) {
+            if ($item.Attributes -eq "Directory"-and $item.Name -ne "clean-desktop") {
+                $Filedirectory = $extension_paths["Directory"]
+                Move-Item -Path "$DesktopPath\$item" -Destination "$path\$Filedirectory"
+            }
+        }
     }
+
+    [System.Windows.Forms.MessageBox]::Show("Cleaning done!", "Info", 0, [System.Windows.Forms.MessageBoxIcon]::Asterisk)
+
 }
 
 
