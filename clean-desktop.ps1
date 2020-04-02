@@ -151,8 +151,8 @@ $extension_paths = @{
 $DesktopPath = [System.Environment]::GetFolderPath("Desktop")
 $font = "Arial"
 $IconPath = ".\pictures\broom.ico"
-$Version = "0.1"
-$LastUpdate = "03-31-2020"
+$Version = "1.0"
+$LastUpdate = "2020-04-02"
 
 #Import Windows Forms Assembly
 Add-Type -assembly System.Windows.Forms
