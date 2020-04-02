@@ -18,8 +18,7 @@ You can easily extend the file extensions in the script, but this will not affec
 <tr><td>
 
  |   Audio files |   Directory |    
- |  :-: |  :-: |  
- |  noname |  other/uncategorized |  
+ |  :-: |  :-: |    
  |  .aif |  media/audio |  
  |  .cda |  media/audio |  
  |  .mid |  media/audio |  
@@ -194,8 +193,9 @@ You can easily extend the file extensions in the script, but this will not affec
  |  .sys |  text/other/system |  
  |  .tmp |  text/other/system |  
 
- |  Folder |  Directory |  
+ |  Other |  Directory |  
    |  :-: |  :-: | 
  |  directory |  folders |  
+ |  noname |  other/uncategorized |
 </td></tr>
 </table>
