@@ -1,5 +1,5 @@
 # clean-desktop
-You ever found your desktop this messy, that you cant find specific file or just with long searching?
+You ever found your desktop this messy, that you cant find specific file or just with long searching?<br>
 This little helper tool will clean your desktop and sort all file into categorized folders.
 
 # How does it work?
@@ -8,7 +8,9 @@ Download the latest release and launch the clean-desktop.exe or the clean-deskto
 ![Program](pictures/clean-desktop.PNG)
 
 The program will always create a "clean-desktop" folder, where all your file goes in. The default directory is the desktop.<br>
-By checking "Move folders" it will move also the folders.
+By checking "Move folders" it will move also the folders. <br>
+<br>
+You can easily extend the file extensions in the script, but this will not affect the clean-dekstop.exe!
 
 # Which files are sorted by the program?
 <table>
