@@ -287,7 +287,7 @@ function cleanDesktop($path){
             }
         }
         if ($checkBoxFolder.Checked -eq $true) {
-            if ($item.Attributes -eq "Directory"-and $item.Name -ne "clean-desktop") {
+            if ($item.Attributes -match "Directory"-and $item.Name -ne "clean-desktop") {
                 $Filedirectory = $extension_paths["Directory"]
                 Move-Item -Path "$DesktopPath\$item" -Destination "$path\$Filedirectory"
             }
