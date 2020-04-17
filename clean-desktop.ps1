@@ -151,8 +151,8 @@ $extension_paths = @{
 $DesktopPath = [System.Environment]::GetFolderPath("Desktop")
 $font = "Arial"
 $IconPath = ".\pictures\broom.ico"
-$Version = "1.0"
-$LastUpdate = "2020-04-02"
+$Version = "1.0.1"
+$LastUpdate = "2020-04-17"
 
 #Import Windows Forms Assembly
 Add-Type -assembly System.Windows.Forms
@@ -259,7 +259,7 @@ $menuHelp.Add_Click( { $help_form.ShowDialog() })
 $menuAbout = New-Object System.Windows.Forms.ToolStripMenuItem
 $mainMenu.Items.Add($menuAbout)
 $menuAbout.Text = "About"
-$menuAbout.Add_Click( { $about_form.Show() })
+$menuAbout.Add_Click( { $about_form.ShowDialog() })
 
 #Path
 $pathbox = New-Object System.Windows.Forms.TextBox
