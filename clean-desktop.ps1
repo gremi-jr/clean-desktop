@@ -125,7 +125,7 @@ $extension_paths = @{
     '.sh'=     'programming/shell';
     '.h'=      'programming/c&c++';
     '.ps1' =   'programming/powershell';
-    '.vbs' =   'programming/visualbasic;' 
+    '.vbs' =   'programming/visualbasic'; 
     # spreadsheets
     '.ods'=    'text/microsoft/excel';
     '.xlr'=    'text/microsoft/excel';
